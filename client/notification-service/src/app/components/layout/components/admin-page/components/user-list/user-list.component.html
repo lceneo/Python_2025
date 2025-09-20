@@ -1,0 +1,27 @@
+
+<div class="header">
+  <h2 [style.font-weight]="500">Список всех пользователей</h2>
+</div>
+<ul class="notificationList">
+  @for (user of users(); track user.user_id) {
+    <li>
+      <mat-card class="example-card" appearance="outlined">
+        <mat-card-header class="cardHeader">
+          <mat-card-title>{{user.user_name}}</mat-card-title>
+          <div>
+            <button mat-icon-button (click)="banUser(user)"
+                    [disabled]="user.user_banned"
+            >
+              <mat-icon>person_remove</mat-icon>
+            </button>
+            <button mat-icon-button (click)="unbanUser(user)"
+                    [disabled]="!user.user_banned"
+            >
+              <mat-icon>backup</mat-icon>
+            </button>
+          </div>
+        </mat-card-header>
+      </mat-card>
+    </li>
+  }
+</ul>

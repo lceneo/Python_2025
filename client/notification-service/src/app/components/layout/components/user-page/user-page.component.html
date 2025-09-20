@@ -1,0 +1,29 @@
+
+<div class="header">
+  <h2 [style.font-weight]="500">Список напоминаний</h2>
+  <button mat-icon-button (click)="addNewNotification()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+<ul class="notificationList">
+  @for (notification of userNotifications(); track notification.notification_id) {
+    <li>
+      <mat-card class="example-card" appearance="outlined">
+        <mat-card-header class="cardHeader">
+          <mat-card-title>{{notification.notification_time | date: 'medium'}}</mat-card-title>
+          <div>
+            <button mat-icon-button (click)="deleteNotification(notification.notification_id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button (click)="changeNotification(notification)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{notification.notification_text}}</p>
+        </mat-card-content>
+      </mat-card>
+    </li>
+  }
+</ul>

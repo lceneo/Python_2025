@@ -1,0 +1,16 @@
+:host {
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .notificationList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    list-style: none;
+    .cardHeader {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

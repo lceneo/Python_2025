@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Response, Depends
 from sqlalchemy.orm import Session
 from .pydantic_schemas import UserBanSchema
-from .service import set_user_ban_state, get_all_notifications
+from .service import set_user_ban_state, get_all_notifications, get_all_users
 from ..auth.middlewares.is_admin_middleware import is_admin
 from ..database.database import get_db
 
@@ -21,3 +21,7 @@ async def set_user_ban_state_endpoint(creds: UserBanSchema, db: Session = Depend
 @router.get("/get_all_notifications")
 async def get_all_notifications_endpoint(db: Session = Depends(get_db)):
     return get_all_notifications(db)
+
+@router.get("/get_all_users")
+async def get_all_users_endpoint(db: Session = Depends(get_db)):
+    return get_all_users(db)

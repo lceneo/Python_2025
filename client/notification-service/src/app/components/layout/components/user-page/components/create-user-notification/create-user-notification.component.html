@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Редактирование напоминания</h2>
+<mat-dialog-content class="mat-typography">
+  <form class="form" [formGroup]="notificationForm">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Текст</mat-label>
+      <textarea matInput [formControlName]="'notificationText'"></textarea>
+    </mat-form-field>
+
+    <section class="dateSection">
+      <mat-form-field appearance="outline">
+        <mat-label>Дата</mat-label>
+        <input matInput [matDatepicker]="datepicker" [formControlName]="'notificationTime'">
+        <mat-datepicker #datepicker/>
+        <mat-datepicker-toggle [for]="datepicker" matSuffix/>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Время</mat-label>
+        <input matInput
+               [matTimepicker]="timepicker"
+               [formControlName]="'notificationTime'">
+        <mat-timepicker #timepicker/>
+        <mat-timepicker-toggle [for]="timepicker" matSuffix/>
+      </mat-form-field>
+    </section>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close
+          [disabled]="notificationForm.invalid"
+          (click)="createNotification()">Сохранить</button>
+</mat-dialog-actions>

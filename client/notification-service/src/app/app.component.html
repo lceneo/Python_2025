@@ -1,0 +1,9 @@
+<div class="wrapper">
+  @if (isAuthenticated()) {
+    <app-header class="header" [username]="userInfo()!.username"></app-header>
+  }
+  <section class="content">
+    <router-outlet></router-outlet>
+  </section>
+</div>
+

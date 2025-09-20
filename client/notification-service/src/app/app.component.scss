@@ -1,0 +1,16 @@
+:host {
+  .wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .header {
+      height: 50px;
+      display: block;
+    }
+    .content {
+      flex-grow: 1;
+      padding: 1rem;
+    }
+  }
+}

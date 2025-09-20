@@ -1,0 +1,15 @@
+:host {
+  .form {
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    > {
+      width: 100%;
+    }
+    .dateSection {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+}
