@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from .pydantic_schemas import CreateNotificationSchema, ChangeNotificationSchema
@@ -20,12 +20,21 @@ async def get_notifications_endpoint(user_id = Depends(get_user_id_from_token), 
 
 @router.post("/create")
 async def create_notification_endpoint(notification: CreateNotificationSchema, user_id = Depends(get_user_id_from_token), db: Session = Depends(get_db)):
-    return create_user_notification(user_id, notification, db)
+    try:
+        return create_user_notification(user_id, notification, db)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.put("/change")
 async def change_notification_endpoint(notification_id: int, changed_notification: ChangeNotificationSchema, db: Session = Depends(get_db)):
-    return change_user_notification(notification_id, changed_notification, db)
+    try:
+        return change_user_notification(notification_id, changed_notification, db)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.delete("/delete")
 async def delete_notification_endpoint(notification_id: int, db: Session = Depends(get_db)):
-   delete_user_notification(notification_id, db)
+    try:
+        delete_user_notification(notification_id, db)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))

@@ -13,10 +13,12 @@ router = APIRouter(
 
 @router.post("/user_ban_state")
 async def set_user_ban_state_endpoint(creds: UserBanSchema, db: Session = Depends(get_db)):
+    if (creds.is_banned and creds.ban_reason is None):
+        raise HTTPException(status_code=400, detail="Ban reason is required")
     try:
-        set_user_ban_state(creds.user_id, creds.is_banned, db)
+        set_user_ban_state(creds.user_id, creds.is_banned, creds.ban_reason, db)
     except Exception as e:
-        raise HTTPException(status_code=404, detail="User doesn't exist")
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.get("/get_all_notifications")
 async def get_all_notifications_endpoint(db: Session = Depends(get_db)):

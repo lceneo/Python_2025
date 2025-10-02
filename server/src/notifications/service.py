@@ -22,16 +22,18 @@ def create_user_notification(user_id: int, notification: CreateNotificationSchem
     db.commit()
     db.refresh(new_notification)
     user = get_user(user_id, db)
-    notification_task = send_ya_mail_task.apply_async(
-        args=[user.user_email, new_notification.notification_text],
-        eta=new_notification.notification_time)
-    notification_task_orm = NotificationTaskORM(
+    try:
+        notification_task = send_ya_mail_task.apply_async(
+            args=[user.user_email, new_notification.notification_text],
+            eta=new_notification.notification_time)
+        notification_task_orm = NotificationTaskORM(
         notification_id = new_notification.notification_id,
-        task_id = notification_task.id
-    )
-    db.add(notification_task_orm)
-    db.commit()
-    return new_notification
+        task_id = notification_task.id)
+        db.add(notification_task_orm)
+        db.commit()
+        return new_notification
+    except Exception as e:
+        raise e
 
 def change_user_notification(notification_id: int, changed_notification: ChangeNotificationSchema, db: Session):
     notification = db.query(NotificationORM).get(notification_id)

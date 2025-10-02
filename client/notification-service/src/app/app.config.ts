@@ -1,6 +1,6 @@
 import {
   ApplicationConfig,
-  ErrorHandler, LOCALE_ID,
+  ErrorHandler, inject, LOCALE_ID, provideAppInitializer,
   provideZonelessChangeDetection
 } from '@angular/core';
 import {provideRouter, withDebugTracing} from '@angular/router';
@@ -11,6 +11,7 @@ import {ErrorHandlerService} from './services/error-handler.service';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {registerLocaleData} from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
+import {config} from 'rxjs';
 
 registerLocaleData(localeRu);
 
@@ -21,6 +22,12 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideNativeDateAdapter(),
     { provide: ErrorHandler, useClass: ErrorHandlerService },
-    { provide: LOCALE_ID, useValue: 'ru' }
+    { provide: LOCALE_ID, useValue: 'ru' },
+    provideAppInitializer(() => {
+      const errorHandler = inject(ErrorHandler);
+      config.onUnhandledError = err => {
+        errorHandler.handleError(err);
+      }
+    })
   ]
 };

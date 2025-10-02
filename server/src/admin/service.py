@@ -5,10 +5,11 @@ from ..auth.types.roles_enum import RoleEnum
 from ..notifications.orm_schemas import NotificationORM
 
 
-def set_user_ban_state(user_id: int, ban_state: bool, db: Session):
+def set_user_ban_state(user_id: int, ban_state: bool, ban_reason: str | None, db: Session):
     user = db.query(UserORM).get(user_id)
     if user:
         user.user_banned = ban_state
+        user.ban_reason = ban_reason
         db.commit()
     else:
         raise Exception("User doesn't exist")

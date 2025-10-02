@@ -13,7 +13,7 @@ async def login(creds: UserLoginSchema, response: Response, db: Session = Depend
     if user is None:
         raise HTTPException(status_code=404, detail="User doesn't exist")
     elif user.user_banned:
-        raise HTTPException(status_code=403, detail="User banned")
+        raise HTTPException(status_code=403, detail=f"Banned for {str(user.ban_reason)}")
     token = security.create_access_token(uid = str(user.user_id), data={ "username": creds.username, "role_id": user.role_id })
     response.set_cookie(auth_config.JWT_ACCESS_COOKIE_NAME, token)
     return token

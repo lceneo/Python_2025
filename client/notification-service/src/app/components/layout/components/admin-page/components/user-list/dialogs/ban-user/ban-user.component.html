@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Блокировка пользователя</h2>
+
+<mat-dialog-content [style.padding-top.px]="5">
+  <mat-form-field appearance="outline" [style.width.%]="100">
+    <mat-label>Причина</mat-label>
+    <textarea matInput [formControl]="banReasonControl"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton [disabled]="banReasonControl.invalid" [mat-dialog-close]="banReasonControl.value">Подтвердить</button>
+</mat-dialog-actions>

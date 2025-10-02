@@ -5,6 +5,9 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/mat
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {User} from '../../../user-page/types/User';
+import {MatDialog} from '@angular/material/dialog';
+import {BanUserComponent} from './dialogs/ban-user/ban-user.component';
+import {filter, switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-user-list',
@@ -22,12 +25,19 @@ import {User} from '../../../user-page/types/User';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserListComponent {
+
   protected adminS = inject(AdminService);
   protected users = this.adminS.allUsers;
+  private matDialog = inject(MatDialog);
 
   banUser(user: User) {
-    this.adminS.changeUserBanState$({ user_id: user.user_id, is_banned: true })
-      .subscribe();
+    this.matDialog.open(BanUserComponent, {
+      autoFocus: false
+    }).afterClosed()
+      .pipe(
+        filter(banReason => !!banReason),
+        switchMap(banReason => this.adminS.changeUserBanState$({ user_id: user.user_id, is_banned: true, ban_reason: banReason }))
+      ).subscribe();
   }
 
   unbanUser(user: User) {

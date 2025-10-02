@@ -46,12 +46,12 @@ export class AdminService {
       );
   }
 
-  changeUserBanState$(userBanState: { user_id: number, is_banned: boolean } ) {
+  changeUserBanState$(userBanState: { user_id: number, is_banned: boolean, ban_reason?: string } ) {
     return this.httpClient.post(`${this.apiPath}/user_ban_state`, userBanState)
       .pipe(
         tap(() => this.allUsers.update(users => {
           const editedUserIndex = users.findIndex(u => u.user_id === userBanState.user_id);
-          return users.map((u, i) => i === editedUserIndex ? {...u, user_banned: userBanState.is_banned} : u);
+          return users.map((u, i) => i === editedUserIndex ? {...u, user_banned: userBanState.is_banned, ban_reason: userBanState.ban_reason} : u);
         }))
       )
   }

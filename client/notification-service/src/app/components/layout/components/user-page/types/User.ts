@@ -6,4 +6,5 @@ export type User = {
   user_email: string;
   role_id: UserRolesEnum;
   user_banned: boolean;
+  ban_reason?: string;
 }

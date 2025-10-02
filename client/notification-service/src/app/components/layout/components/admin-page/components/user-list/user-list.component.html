@@ -21,6 +21,13 @@
             </button>
           </div>
         </mat-card-header>
+        @if (user.user_banned) {
+          <mat-card-content>
+            <p>
+              Забанен за: {{ user.ban_reason }}
+            </p>
+          </mat-card-content>
+        }
       </mat-card>
     </li>
   }
